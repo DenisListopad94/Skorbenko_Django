@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Users{% endblock %}
+{% block content %}
+<h1>Hotels_View</h1>
+<ul>
+    <p>2)	Ввести 10 разных отелей с разным количеством звёзд и разных городах</p>
+    {% for hotel in hotels_list_view %}
+    <li>
+        Название: {{ hotel.name }}, Кол-во звезд: {{ hotel.stars }}
+    </li>
+    {% endfor %}
+</ul>
+<ul>
+    5)	Вывести все отели, имеющие более 3 звёзд!
+    {% for hotel in hotels_list_view %}
+    {% if hotel.stars > 3 %}
+    <li>
+        Название: {{ hotel.name }},
+        Кол-во звезд: {{ hotel.stars }}
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
+
+
+{% endblock %}
