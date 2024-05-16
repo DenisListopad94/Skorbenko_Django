@@ -3,21 +3,45 @@
 {% block title %}Users{% endblock %}
 {% block content %}
 <h1>Persons</h1>
-<ul>
-    <p>3)Ввести 10 разных пользователей разных возрастов/<br>4) Вывести всех пользователей сайта.</p>
-    {% for person in persons_list %}
-    <li>
-        Имя: {{ person.first_name }}, Возраст: {{ person.age }}
-    </li>
-    {% endfor %}
-</ul>
 
-<ul>
-    <p>6) Вывести тех пользователей которые старше 40 лет а имя начинается на “P”.</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="row">id</th>
+      <th scope="col">First name</th>
+      <th scope="col">Last name</th>
+      <th scope="col">Age</th>
+      <th scope="col">City</th>
+      <th scope="col">Sex</th>
+      <th scope="col">Hobby</th>
+      <th scope="col">Comment</th>
+    </tr>
+  </thead>
+  <tbody>
     {% for person in persons_list %}
-    <li>
-        {% if person.age > 40 and person.first_name.0 == 'P' %}
-        Имя: {{ person.first_name }}, Возраст: {{ person.age }}
+    <tr>
+        <th>{{ person.id }}</th>
+        <td>{{ person.first_name }}</td>
+        <td>{{ person.last_name }}</td>
+        <td>{{ person.age }}</td>
+        <td>{{ person.city }}</td>
+        <td>{{ person.sex }}</td>
+        <td>
+        {% for hobby in person.hobbies.all %}
+        {{ hobby.name }}
+        {% endfor %}
+        </td>
+        <td>
+        {% for comment in person.hotel_comments.all %}
+        {{ comment.comment }}
+        {% endfor %}
+        </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+{% endblock %}
         {% else%}
         <p>Нет таких пользователей</p>
         {% endif %}

@@ -1,11 +1,8 @@
-from django.shortcuts import render
-
 # Create your views here.
 
 from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
-from .models import Person, Hotels
+
+from .models import Person, Hotels, User
 
 
 # def rules(request):
@@ -27,26 +24,18 @@ def hotels(request):
 
 
 def users(request):
-    users_list = [
-        {"name": "Максим", "age": 29, "comments": ["Мой новый пост!", "Отличный отель."]},
-        {"name": "Наташа", "age": 33, "comments": ["Пристижно выглядит.", "Удивительно неплохо!"]},
-        {"name": "Денис", "age": 22, "comments": ["Спасибо очень классно.", "Отдыхаю отлично."]},
-        {"name": "Саша", "age": 45, "comments": ["Я недоволен.", "Очень плохо."]},
-        {"name": "Таня", "age": 32, "comments": ["спасибо за обслуживание.", "Круто"]},
-        {"name": "Ання", "age": 47, "comments": ["Мой пост!", "Мы отдахнули отлично."]},
-        {"name": "Миша", "age": 23, "comments": ["Не очень.", " М-да!"]},
-        {"name": "Сергей", "age": 19, "comments": ["Для бабушек сойдет.", "Плохо."]},
-        {"name": "Фил", "age": 33, "comments": ["Класс.", "спасибо."]},
-        {"name": "Дима", "age": 36, "comments": ["Мне нравится", "Еще раз приеду"]}
-    ]
 
-    context = {'users_list': users_list}
+    context = {
+        'users_list': User.objects.all()
+    }
 
-    return render(request=request, template_name="users.html", context=context, )
+    return render(request=request, template_name="users.html", context=context,)
 
 
 def persons(request):
-    context = {'persons_list': Person.objects.all()}
+    context = {
+        'persons_list': Person.objects.all().prefetch_related("hotel_comments").prefetch_related("hobbies")
+    }
     return render(request=request, template_name="persons.html", context=context, )
 
 
@@ -68,6 +57,8 @@ def comments(request):
 
 
 def hotels_view(request):
-    context = {'hotels_list_view': Hotels.objects.all()}
+    context = {
+        'hotels_list_view': Hotels.objects.all().prefetch_related("owners").prefetch_related("hotel_comments")
+    }
 
     return render(request=request, template_name="hotels_view.html", context=context, )
