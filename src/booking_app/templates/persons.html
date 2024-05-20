@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Users{% endblock %}
+{% block content %}
+<h1>Persons</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="row">id</th>
+      <th scope="col">First name</th>
+      <th scope="col">Last name</th>
+      <th scope="col">Age</th>
+      <th scope="col">City</th>
+      <th scope="col">Sex</th>
+      <th scope="col">Hobby</th>
+      <th scope="col">Comment</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for person in persons_list %}
+    <tr>
+        <th>{{ person.id }}</th>
+        <td>{{ person.first_name }}</td>
+        <td>{{ person.last_name }}</td>
+        <td>{{ person.age }}</td>
+        <td>{{ person.city }}</td>
+        <td>{{ person.sex }}</td>
+        <td>
+        {% for hobby in person.hobbies.all %}
+        {{ hobby.name }}
+        {% endfor %}
+        </td>
+        <td>
+        {% for comment in person.hotel_comments.all %}
+        {{ comment.comment }}
+        {% endfor %}
+        </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+{% endblock %}
+        {% else%}
+        <p>Нет таких пользователей</p>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+<ul>
+    <p>7) Найти всех пользователей которых зовут “Nick” или “Suzan”</p>
+    {% for person in persons_list %}
+    <li>
+        {% if person.first_name == 'Nick' or person.first_name == 'Suzan'%}
+        Имя: {{ person.first_name }}
+        {% else%}
+        <p>Нет таких пользователей</p>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+
+<ul>
+    <p>8) Вывести первых 5 самых младших людей на сайте.</p>
+    {% for person in persons_list|dictsort:"age" %}
+    {% if forloop.counter <= 5 %}
+    Имя: {{ person.first_name }}, Возраст: {{ person.age }}
+    {% endif %}
+    {% endfor %}
+</ul>
+
+<ul>
+    <p>9) Вывести всех девушек в возрасте от 18 до 30 лет</p>
+    {% for person in persons_list %}
+    {% if person.age > 18 and person.sex == 'f' and person.age < 30 and person.sex == 'f'%}
+    Имя: {{ person.first_name }}
+    {% endif %}
+    {% endfor %}
+</ul>
+<ul>
+    <p>10) Вывести всех пользователей, которые не заполнили почту на сайте.</p>
+    {% for person in persons_list %}
+    {% if person.email == NULL %}
+    Имя: {{ person.first_name }}
+    {% else %}
+    Нет таких пользователей
+    {% endif %}
+    {% endfor %}
+</ul>
+
+
+{% endblock %}

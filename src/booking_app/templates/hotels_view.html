@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Users{% endblock %}
+{% block content %}
+<h1>Hotels_View</h1>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="row">id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Stars</th>
+        <th scope="col">address</th>
+        <th scope="col">rating</th>
+        <th scope="col">Hotel Owner</th>
+        <th scope="col">Hotel Comments</th>
+        <th scope="col">Data Users(name etc)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for hotel in hotels_list_view %}
+    <tr>
+        <th>{{ hotel.id }}</th>
+        <td>{{ hotel.name }}</td>
+        <td>{{ hotel.stars }}</td>
+        <td>{{ hotel.address }}</td>
+        <td>{{ hotel.rating }}</td>
+        <td>{{ hotel.owners.first_name }} {{ hotel.owners.last_name }}</td>
+        <td>
+            {% for comment in hotel.hotel_comments.all %}
+            {{ comment.comment }}<br>
+            {% endfor %}
+        </td>
+
+        <td>
+            {% for comment in hotel.hotel_comments.all %}
+            {{comment.persons.first_name }} {{comment.persons.last_name }}<br>
+            {% endfor %}
+        </td>
+
+
+    </tr>
+
+    {% endfor %}
+
+
+    </tbody>
+</table>
+
+{% endblock %}

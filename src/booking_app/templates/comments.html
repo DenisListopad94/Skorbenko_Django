@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Comments{% endblock %}
+{% block content %}
+<h1>Комментарии</h1>
+<ul>
+    {% for user in users_list %}
+    <li>
+        Отзыв: {{ user.comments }}
+        Имя: {{ user.name }}
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
