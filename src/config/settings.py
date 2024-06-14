@@ -39,6 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'booking_app',
+    'booking_rest_api.apps.BookingRestApiConfig',
+    'django_extensions',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +147,18 @@ INTERNAL_IPS = [
     '127.0.0.1',
     '::1',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTIFICATION_CLASSES': [
+        'rest_framework.authentification.TokenAthentidication'
+    ],
+
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
