@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Feedbacks{% endblock %}
+{% block content %}
+
+<h1>Details</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="row">id</th>
+      <th scope="row">Feedback</th>
+      <th scope="col">User</th>
+      <th scope="col">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for feedback in feedbacks %}
+    <tr>
+        <th>{{ feedback.id }}</th>
+        <td>{{ feedback.text }}</td>
+        <td>{{ feedback.user.first_name }} {{ feedback.user.last_name }}</td>
+        <td>{{ feedback.created_at}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
