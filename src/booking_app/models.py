@@ -19,6 +19,7 @@ class User(models.Model):
     age = models.PositiveIntegerField(validators=[age_validator])
     city = models.CharField(max_length=30, null=False)
     sex = models.CharField(max_length=1, choices=SEX_PERSON)
+    photo = models.ImageField(null=True, upload_to='users_photo/', verbose_name="photo")
     email = models.EmailField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

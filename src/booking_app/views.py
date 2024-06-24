@@ -38,13 +38,19 @@ def users(request):
     return render(request=request, template_name="users.html", context=context, )
 
 
+
 @login_required(login_url="/admin/login/")
 @permission_required("booking_app.view_persons")
 def persons(request):
     context = {
         'persons_list': Person.objects.all().prefetch_related("hotel_comments").prefetch_related("hobbies")
     }
-    return render(request=request, template_name="persons.html", context=context, )
+
+    from config.celery import debug_task_two, get_users
+    debug_task_two.delay(15)
+    get_users.delay(15)
+    return render(request=request, template_name="persons.html", context=context,)
+
 
 
 def comments(request):
@@ -228,9 +234,13 @@ def user_add_view(request, error=''):
 
 def user_add(request):
     if request.method == "POST":
-        form = UserModelAddForm(request.POST)
+        form = UserModelAddForm(request.POST, request.FILES)
         if form.is_valid():
+            print(form.errors)
             form.save()
+        else:
+            print(form.errors)
+
     return user_add_view(request, error='')
 
 

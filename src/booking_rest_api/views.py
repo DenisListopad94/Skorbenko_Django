@@ -1,7 +1,9 @@
-from django.shortcuts import render
-
-# Create your views here.
+import django_filters.rest_framework
 from django.contrib.auth.models import User
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.generics import ListAPIView
+from rest_framework.pagination import LimitOffsetPagination
+
 from booking_app.models import HotelOwner, Hobby
 from rest_framework import generics, mixins
 from rest_framework.views import APIView
@@ -10,10 +12,17 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from django.http import Http404
-from .serializers import UserSerializer, HotelOwnerSerializer, HobbiesModelSerializer
+from .serializers import UserSerializer, HotelOwnerSerializer, HobbiesModelSerializer, UserModelSerializer
+import django_filters.rest_framework
 
 
-class UserApiView(APIView):
+class UserApiView(ListAPIView):
+    # permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+    serializer = UserModelSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['is_superuser', 'is_staff']
+    pagination_class = LimitOffsetPagination
 
     def get(self, request, format=None):
         users = User.objects.all()
@@ -23,6 +32,8 @@ class UserApiView(APIView):
 
 class HotelOwnerListView(APIView):
     permission_classes = [IsAuthenticated]
+    # filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    pagination_class = LimitOffsetPagination
 
     def get(self, request, format=None):
         hotel_owners = HotelOwner.objects.all()

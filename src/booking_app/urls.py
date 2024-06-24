@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf.urls.static import static
+from config import settings
 from .views import (index, hotels, users, user_comments_view, hotels_view, persons, book_room, details_orders_view,
                     user_add, feedback_add, feedbacks_view, CommentTemplateView, comments)
 
@@ -16,3 +18,6 @@ urlpatterns = [
     path('feedbacks', feedbacks_view, name='feedbacks'),
     path('comments', CommentTemplateView.as_view(), name="comments"),
     ]
+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

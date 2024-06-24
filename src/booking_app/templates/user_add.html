@@ -5,7 +5,7 @@
 {% block title %}My amazing booking app{% endblock %}
 
 {% block content %}
-<form action="/booking_app/user_add" method="POST">
+<form action="/booking_app/user_add" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|crispy }}
     <button type="submit" class="btn btn-primary">Add user</button>

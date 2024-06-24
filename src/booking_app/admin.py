@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Person, Profile, Hotels, HotelsComment, HotelOwner, Hobby, BookInfo, User, PersonComment
+from django.utils.safestring import mark_safe
 
 
 class HotelsCommentInline(admin.TabularInline):
@@ -18,8 +19,14 @@ class HobbyInline(admin.TabularInline):
     model = Hobby.owners.through
 
 
+@admin.display(description='photo')
+def get_html_photo(objects):
+    if objects.photo:
+        return mark_safe(f'<img src={objects.photo.url} width=50>')
+
+
 class UserAdmin(admin.ModelAdmin):
-    list_display = ["first_name", "last_name", "email", "age"]
+    list_display = ["first_name", "last_name", "email", "age", "get_html_photo"]
     fieldsets = [
         (
             None,

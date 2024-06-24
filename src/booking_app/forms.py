@@ -13,7 +13,7 @@ class BookingRoom(forms.Form):
 class UserModelAddForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "age", "city", "sex", "email"]
+        fields = ["first_name", "last_name", "age", "city", "sex", "email", "photo"]
 
 
 class FeedbackModelAddForm(forms.ModelForm):
