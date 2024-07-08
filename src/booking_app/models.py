@@ -1,5 +1,12 @@
 from django.db import models
 
+# Create your models here.
+from django.core.validators import MinValueValidator, MaxValueValidator
+
+from .validators import age_validator
+
+from django.db import models
+
 
 # Create your models here.
 class User(models.Model):
@@ -9,9 +16,10 @@ class User(models.Model):
     }
     first_name = models.CharField(max_length=30, null=False)
     last_name = models.CharField(max_length=30, null=False)
-    age = models.PositiveIntegerField()
+    age = models.PositiveIntegerField(validators=[age_validator])
     city = models.CharField(max_length=30, null=False)
     sex = models.CharField(max_length=1, choices=SEX_PERSON)
+    photo = models.ImageField(null=True, upload_to='users_photo/', verbose_name="photo")
     email = models.EmailField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -106,3 +114,26 @@ class PersonComment(Comment):
 
     def __str__(self):
         return f'{self.comment}'
+
+
+class Room(models.Model):
+    hotel = models.ForeignKey(Hotels, related_name='rooms', on_delete=models.CASCADE)
+    number = models.PositiveIntegerField(validators=[
+        MaxValueValidator(1000),
+        MinValueValidator(1)
+    ])
+    is_booked = models.BooleanField(default=False)
+    user = models.ForeignKey(User, related_name='booked_rooms', on_delete=models.SET_NULL, null=True, blank=True)
+
+
+class Booking(models.Model):
+    room = models.ForeignKey(Room, related_name='bookings', on_delete=models.CASCADE)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    customer_full_name = models.CharField(max_length=255)
+
+
+class Feedback(models.Model):
+    user = models.ForeignKey(User, related_name='users_feedback', on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    text = models.CharField(max_length=100)
